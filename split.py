@@ -57,32 +57,8 @@ def split_data():
         os.replace(labels_path+label_file_name_wit_ext, test_label_path+label_file_name_wit_ext)
         all_files.remove(index)
 
-   
 
 
-    # while count > 0 and valid_count > 0 and test_count >0:
-    #     index = random.randint(0, count-1) 
-    #     if os.path.exists(images_path+all_files[index]):
-    #         try:
-    #             if valid_count > 0:
-    #                 os.replace(images_path+all_files[index], valid_path+all_files[index])
-    #                 os.replace(labels_path+all_label_files[index], valid_path+all_label_files[index])
-    #                 valid_count = valid_count - 1
-    #             elif test_count > 0:
-    #                 os.replace(images_path+all_files[index], test_path+all_files[index])
-    #                 os.replace(labels_path+all_label_files[index], test_path+all_label_files[index])
-    #                 test_count = test_count - 1
-    #             # elif train_count > 0:
-    #             #     os.replace(images_path+all_files[index], "train/"+all_files[index])
-    #             #     os.replace(labels_path+all_label_files[index], "train/"+all_label_files[index])
-    #             #     train_count = train_count - 1
-    #         except OSError:
-    #             print ('Error: Unable to copy'+all_files[index])
-    #     print("--done--")
-
-
-
-                
 def match_images_and_labels():
     images_path = os.path.join(opt.images,'')
     labels_path  = os.path.join(opt.labels,'')
