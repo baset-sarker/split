@@ -1,11 +1,12 @@
 # Importing all necessary libraries
 from logging.config import valid_ident
-import cv2
 import os
 import sys
 import random
 import argparse
 
+
+# split the data into train and test and validation
 def split_data():
 
     train_percent  = 92
@@ -58,7 +59,6 @@ def split_data():
         all_files.remove(index)
 
 
-
 def match_images_and_labels():
     images_path = os.path.join(opt.images,'')
     labels_path  = os.path.join(opt.labels,'')
@@ -77,7 +77,6 @@ def match_images_and_labels():
         return False
     else:
         return True
-
 
 
 if __name__ == '__main__':
