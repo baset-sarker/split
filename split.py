@@ -4,14 +4,42 @@ import os
 import sys
 import random
 import argparse
+import shutil
 
+# compare two array and take the common element
+def compare_array(arr1,arr2):
+    arr3 = [value for value in arr1 if value in arr2]
+    return arr3
+
+def create_directories_if_not_exist(train_path,test_path,valid_path):
+    if not os.path.exists(train_path):
+        os.mkdir(train_path)
+    if not os.path.exists(test_path):
+        os.mkdir(test_path)
+    if not os.path.exists(valid_path):
+        os.mkdir(valid_path)
+
+    if not os.path.exists(train_path+"images/"):
+        os.mkdir(train_path+"images/")
+    if not os.path.exists(train_path+"labels/"):
+        os.mkdir(train_path+"labels/")
+
+    if not os.path.exists(test_path+"images/"):
+        os.mkdir(test_path+"images/")
+    if not os.path.exists(test_path+"labels/"):
+        os.mkdir(test_path+"labels/")
+
+    if not os.path.exists(valid_path+"images/"):
+        os.mkdir(valid_path+"images/")
+    if not os.path.exists(valid_path+"labels/"):
+        os.mkdir(valid_path+"labels/")
 
 # split the data into train and test and validation
 def split_data():
 
-    train_percent  = 92
-    test_percent   = 4
-    valid_percent  = 4
+    train_percent  = 80
+    test_percent   = 10
+    valid_percent  = 10
 
     images_path = os.path.join(opt.images,'')
     labels_path  = os.path.join(opt.labels,'')
@@ -25,7 +53,9 @@ def split_data():
     test_label_path = test_path+"labels/"
     valid_image_path = valid_path+"images/"
     valid_label_path = valid_path+"labels/"
-    
+    train_image_path = train_path+"images/"
+    train_label_path = train_path+"labels/"
+
     
 
     if not os.path.exists(images_path):
@@ -36,7 +66,12 @@ def split_data():
         exit()  
     
 
-    all_files = os.listdir(images_path)
+    image_path_list = os.listdir(images_path)
+    label_path_list = os.listdir(labels_path)
+    image_path_list_without_ext = [s.strip('.jpg') for s in image_path_list]
+    label_path_list_without_ext = [s.strip('.txt') for s in label_path_list] 
+
+    all_files = compare_array(image_path_list_without_ext,label_path_list_without_ext)
     count = len(all_files)
     train_count = int(train_percent*count/100)
     test_count  = int(test_percent*count/100)
@@ -44,18 +79,29 @@ def split_data():
     print("Count: ",count,"Train: ",train_count,"Test: ",test_count,"valid: ",valid_count)  
 
 
+    create_directories_if_not_exist(train_path,test_path,valid_path)
+
     valid_list = random.sample(all_files, valid_count)   
     for index in valid_list:
-        os.replace(images_path+index, valid_image_path+index)
-        label_file_name_wit_ext = index.rsplit( ".", 1 )[0]+".txt"
-        os.replace(labels_path+label_file_name_wit_ext, valid_label_path+label_file_name_wit_ext)
-        all_files.remove(index)
+        label_file_name_wit_ext = index+".txt"
+        image_file_name_wit_ext = index+".jpg"
+        shutil.copyfile(images_path+image_file_name_wit_ext, valid_image_path+image_file_name_wit_ext)
+        shutil.copyfile(labels_path+label_file_name_wit_ext, valid_label_path+label_file_name_wit_ext)
+
 
     test_list = random.sample(all_files, test_count)   
     for index in test_list:
-        os.replace(images_path+index, test_image_path+index)
-        label_file_name_wit_ext = index.rsplit( ".", 1 )[0]+".txt"
-        os.replace(labels_path+label_file_name_wit_ext, test_label_path+label_file_name_wit_ext)
+        label_file_name_wit_ext = index+".txt"
+        image_file_name_wit_ext = index+".jpg"
+        shutil.copyfile(images_path+image_file_name_wit_ext, test_image_path+image_file_name_wit_ext)
+        shutil.copyfile(labels_path+label_file_name_wit_ext, test_label_path+label_file_name_wit_ext)
+        all_files.remove(index)
+      
+    for index in all_files:
+        label_file_name_wit_ext = index+".txt"
+        image_file_name_wit_ext = index+".jpg"
+        shutil.copyfile(images_path+image_file_name_wit_ext, train_image_path+image_file_name_wit_ext)
+        shutil.copyfile(labels_path+label_file_name_wit_ext, train_label_path+label_file_name_wit_ext)
         all_files.remove(index)
 
 
@@ -99,6 +145,8 @@ if __name__ == '__main__':
             split_data()
     else:
         split_data()
+
+    
 
     
     
