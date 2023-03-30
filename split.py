@@ -81,28 +81,32 @@ def split_data():
 
     create_directories_if_not_exist(train_path,test_path,valid_path)
 
-    valid_list = random.sample(all_files, valid_count)   
-    for index in valid_list:
-        label_file_name_wit_ext = index+".txt"
-        image_file_name_wit_ext = index+".jpg"
+    valid_list = random.sample(all_files, valid_count)
+    print("valid_count",len(valid_list)) 
+    for im in valid_list:
+        label_file_name_wit_ext = im+".txt"
+        image_file_name_wit_ext = im+".jpg"
         shutil.copyfile(images_path+image_file_name_wit_ext, valid_image_path+image_file_name_wit_ext)
         shutil.copyfile(labels_path+label_file_name_wit_ext, valid_label_path+label_file_name_wit_ext)
+        all_files.remove(im)
 
 
-    test_list = random.sample(all_files, test_count)   
-    for index in test_list:
-        label_file_name_wit_ext = index+".txt"
-        image_file_name_wit_ext = index+".jpg"
+    test_list = random.sample(all_files, test_count)  
+    print("valid_count",len(valid_list))  
+    for im in test_list:
+        image_file_name_wit_ext = im+".jpg"
+        label_file_name_wit_ext = im+".txt"
         shutil.copyfile(images_path+image_file_name_wit_ext, test_image_path+image_file_name_wit_ext)
         shutil.copyfile(labels_path+label_file_name_wit_ext, test_label_path+label_file_name_wit_ext)
-        all_files.remove(index)
-      
-    for index in all_files:
-        label_file_name_wit_ext = index+".txt"
-        image_file_name_wit_ext = index+".jpg"
+        all_files.remove(im)
+
+    print("train_file_count: ",len(all_files))
+    for im in all_files:
+        image_file_name_wit_ext = im+".jpg"
+        label_file_name_wit_ext = im+".txt"
         shutil.copyfile(images_path+image_file_name_wit_ext, train_image_path+image_file_name_wit_ext)
         shutil.copyfile(labels_path+label_file_name_wit_ext, train_label_path+label_file_name_wit_ext)
-        all_files.remove(index)
+        #all_files.remove(im)
 
 
 def match_images_and_labels():
@@ -145,8 +149,6 @@ if __name__ == '__main__':
             split_data()
     else:
         split_data()
-
-    
 
     
     
