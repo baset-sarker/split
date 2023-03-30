@@ -12,6 +12,15 @@ def compare_array(arr1,arr2):
     return arr3
 
 def create_directories_if_not_exist(train_path,test_path,valid_path):
+    
+    #remove the directory if exist
+    if os.path.exists(train_path):
+        shutil.rmtree(train_path)
+    if os.path.exists(test_path):
+        shutil.rmtree(test_path)
+    if os.path.exists(valid_path):
+        shutil.rmtree(valid_path)
+
     if not os.path.exists(train_path):
         os.mkdir(train_path)
     if not os.path.exists(test_path):
