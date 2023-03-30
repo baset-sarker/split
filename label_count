@@ -1,0 +1,29 @@
+import os
+
+# Define the directory containing the label files
+label_dir = "labels/"
+
+# Define the dictionary to store the class counts
+class_counts = {}
+
+# Loop through each label file in the directory
+for filename in os.listdir(label_dir):
+    if filename.endswith(".txt"):
+        # Open the label file
+        with open(os.path.join(label_dir, filename), "r") as f:
+            # Loop through each line in the label file
+            for line in f:
+                # Split the line by whitespace
+                data = line.strip().split(" ")
+                # The first element is the class ID
+                class_id = int(data[0])
+                # If the class ID is not already in the dictionary, add it
+                if class_id not in class_counts:
+                    class_counts[class_id] = 0
+                # Increment the count for the class ID
+                class_counts[class_id] += 1
+
+# Print the class counts
+print("Class Counts:")
+for class_id, count in class_counts.items():
+    print(f"Class {class_id}: {count}")
