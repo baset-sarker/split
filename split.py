@@ -19,7 +19,7 @@ def copy_and_organize_files(file_pairs, destination_directory):
 if __name__ == '__main__':
     # Create an ArgumentParser object.
     parser = argparse.ArgumentParser(description="Organize and split files into train, test, and valid directories.")
-    parser.add_argument("--source", help="Path to the source directory containing .txt and .png files")
+    parser.add_argument("--source",required=True ,help="Path to the source directory containing .txt and .png files")
     parser.add_argument("--dest", type=str, default=".", help="destination folder path")
     parser.add_argument("--check", action="store_true", help="Check for unpaired .png or .txt files without pairs")
 
