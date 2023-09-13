@@ -75,12 +75,21 @@ if __name__ == '__main__':
     parser.add_argument("--source",required=True, help="Path to the source directory containing .txt and .png files")
     parser.add_argument("--dest", type=str, default=".", help="destination folder path")
     parser.add_argument("--check", action="store_true", help="Check for unpaired .png or .txt files without pairs")
+    # parser.add_argument("--train_ratio", type=float,default="80", help="Check for unpaired .png or .txt files without pairs")
+    # parser.add_argument("--test_ratio", type=float,default="10", help="Check for unpaired .png or .txt files without pairs")
+    # parser.add_argument("--valid_ratio", type=float,default="10", help="Check for unpaired .png or .txt files without pairs")
+    parser.add_argument("--ratio",nargs='+',type=int,default=[80,10,10], help="Train test valid ratio")
 
     # Parse the command-line arguments.
     args = parser.parse_args()
     # Get the source directory from the parsed arguments.
     source_directory = args.source
     output_directory = args.dest
+    train_ratio, test_ratio, valid_ratio = args.ratio[0]/100, args.ratio[1]/100, args.ratio[2]/100
+    
+    if train_ratio + test_ratio + valid_ratio != 1:
+        print("train, test, valid ratios must sum to 100")
+        exit()
 
 
     file_pairs, unpaired_files = find_paired_and_unpaired_files()
@@ -102,10 +111,7 @@ if __name__ == '__main__':
     # Shuffle the file pairs if you want to randomize the split.
     random.shuffle(file_pairs)
 
-    # Define the split ratios (adjust as needed).
-    train_ratio = 0.8
-    test_ratio = 0.1
-    valid_ratio = 0.1
+
 
     # Calculate split indices.
     total_files = len(file_pairs)
