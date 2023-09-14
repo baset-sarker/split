@@ -75,9 +75,6 @@ if __name__ == '__main__':
     parser.add_argument("--source",required=True, help="Path to the source directory containing .txt and .png files")
     parser.add_argument("--dest", type=str, default=".", help="destination folder path")
     parser.add_argument("--check", action="store_true", help="Check for unpaired .png or .txt files without pairs")
-    # parser.add_argument("--train_ratio", type=float,default="80", help="Check for unpaired .png or .txt files without pairs")
-    # parser.add_argument("--test_ratio", type=float,default="10", help="Check for unpaired .png or .txt files without pairs")
-    # parser.add_argument("--valid_ratio", type=float,default="10", help="Check for unpaired .png or .txt files without pairs")
     parser.add_argument("--ratio",nargs='+',type=int,default=[80,10,10], help="Train test valid ratio")
 
     # Parse the command-line arguments.
