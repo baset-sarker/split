@@ -12,7 +12,7 @@ def copy_and_organize_files(file_pairs, destination_directory,noremove):
     image_dir = os.path.join(destination_directory, image_subdir)
     label_dir = os.path.join(destination_directory, label_subdir)
 
-    if noremove:
+    if noremove == False:
         os.makedirs(image_dir, exist_ok=True)
         os.makedirs(label_dir, exist_ok=True)
 
@@ -21,13 +21,13 @@ def copy_and_organize_files(file_pairs, destination_directory,noremove):
         shutil.copy(os.path.join(source_directory, text), os.path.join(label_dir, text))
 
 
-def create_directories(output_directory,no_remove):
+def create_directories(output_directory,noremove):
      # Create output directories for train, test, and valid sets.
     train_directory = os.path.join(output_directory, "train")
     test_directory = os.path.join(output_directory, "test")
     valid_directory = os.path.join(output_directory, "valid")
 
-    if no_remove:
+    if noremove == False:
         # Remove the train, test, and valid directories if they exist.
         if os.path.exists(train_directory):
             shutil.rmtree(train_directory)
