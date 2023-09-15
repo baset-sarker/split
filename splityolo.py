@@ -5,34 +5,36 @@ import random
 import argparse
 
 # Function to copy files and organize them into subdirectories.
-def copy_and_organize_files(file_pairs, destination_directory):
+def copy_and_organize_files(file_pairs, destination_directory,noremove):
     # Define subdirectories for images and labels.
     image_subdir = "images"
     label_subdir = "labels"
     image_dir = os.path.join(destination_directory, image_subdir)
     label_dir = os.path.join(destination_directory, label_subdir)
 
-    os.makedirs(image_dir, exist_ok=True)
-    os.makedirs(label_dir, exist_ok=True)
+    if noremove:
+        os.makedirs(image_dir, exist_ok=True)
+        os.makedirs(label_dir, exist_ok=True)
 
     for image, text in file_pairs:
         shutil.copy(os.path.join(source_directory, image), os.path.join(image_dir, image))
         shutil.copy(os.path.join(source_directory, text), os.path.join(label_dir, text))
 
 
-def create_directories(output_directory):
+def create_directories(output_directory,no_remove):
      # Create output directories for train, test, and valid sets.
     train_directory = os.path.join(output_directory, "train")
     test_directory = os.path.join(output_directory, "test")
     valid_directory = os.path.join(output_directory, "valid")
 
-    # Remove the train, test, and valid directories if they exist.
-    if os.path.exists(train_directory):
-        shutil.rmtree(train_directory)
-    if os.path.exists(test_directory):
-        shutil.rmtree(test_directory)
-    if os.path.exists(valid_directory):
-        shutil.rmtree(valid_directory)
+    if no_remove:
+        # Remove the train, test, and valid directories if they exist.
+        if os.path.exists(train_directory):
+            shutil.rmtree(train_directory)
+        if os.path.exists(test_directory):
+            shutil.rmtree(test_directory)
+        if os.path.exists(valid_directory):
+            shutil.rmtree(valid_directory)
 
     # Create the train, test, and valid directories again.
     os.makedirs(train_directory, exist_ok=True)
@@ -76,12 +78,14 @@ if __name__ == '__main__':
     parser.add_argument("--dest", type=str, default=".", help="destination folder path")
     parser.add_argument("--check", action="store_true", help="Check for unpaired .png or .txt files without pairs")
     parser.add_argument("--ratio",nargs='+',type=int,default=[80,10,10], help="Train test valid ratio")
+    parser.add_argument("--noremove", action="store_true", help="Do not remove existing train, test, and valid directories")
 
     # Parse the command-line arguments.
     args = parser.parse_args()
     # Get the source directory from the parsed arguments.
     source_directory = args.source
     output_directory = args.dest
+    noremove = args.noremove
     train_ratio, test_ratio, valid_ratio = args.ratio[0]/100, args.ratio[1]/100, args.ratio[2]/100
     
     if train_ratio + test_ratio + valid_ratio != 1:
@@ -103,7 +107,7 @@ if __name__ == '__main__':
         exit()
 
 
-    train_directory, test_directory, valid_directory = create_directories(output_directory)
+    train_directory, test_directory, valid_directory = create_directories(output_directory,noremove)
 
     # Shuffle the file pairs if you want to randomize the split.
     random.shuffle(file_pairs)
@@ -117,9 +121,9 @@ if __name__ == '__main__':
 
 
     # Copy files to their respective directories and organize them.
-    copy_and_organize_files(file_pairs[:train_split], train_directory)
-    copy_and_organize_files(file_pairs[train_split:test_split], test_directory)
-    copy_and_organize_files(file_pairs[test_split:], valid_directory)
+    copy_and_organize_files(file_pairs[:train_split], train_directory,noremove)
+    copy_and_organize_files(file_pairs[train_split:test_split], test_directory,noremove)
+    copy_and_organize_files(file_pairs[test_split:], valid_directory,noremove)
 
     print("Train count:",len(file_pairs[:train_split]))
     print("Test count:",len(file_pairs[train_split:test_split]))
