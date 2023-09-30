@@ -108,6 +108,7 @@ source = args.source
 # get all image and annotation path
 import glob
 image_paths = glob.glob(source + '/*.png')
+count = len(image_paths)
 
 for image_path in image_paths:
     annotation_path = image_path.replace('.png','.txt')
@@ -116,6 +117,7 @@ for image_path in image_paths:
         vertical_shift(image_path, annotation_path, shift_amount_vertical = scale,is_show_result = False)
         horizontal_shift(image_path, annotation_path, shift_amount_horizontal =scale,is_show_result = False)
         scale = scale+0.02
-        print(scale)
+        print(scale,"count:",count)
+    count = count-1
 
 
