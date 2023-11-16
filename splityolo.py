@@ -17,8 +17,15 @@ def copy_and_organize_files(file_pairs, destination_directory,noremove):
         os.makedirs(label_dir, exist_ok=True)
 
     for image, text in file_pairs:
-        shutil.copy(os.path.join(source_directory, image), os.path.join(image_dir, image))
-        shutil.copy(os.path.join(source_directory, text), os.path.join(label_dir, text))
+        # destinaton name should be random number 
+        random_int = str(random.randint(0,1000000))
+        #get extension of image
+        image_ext = image.split(".")[-1]
+        dest_image = random_int + image_ext
+        dest_txt = random_int + ".txt"
+        
+        shutil.copy(os.path.join(source_directory, image), os.path.join(image_dir, dest_image))
+        shutil.copy(os.path.join(source_directory, text), os.path.join(label_dir, dest_text))
 
 
 def create_directories(output_directory,noremove):
