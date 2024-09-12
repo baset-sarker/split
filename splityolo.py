@@ -21,8 +21,8 @@ def copy_and_organize_files(file_pairs, destination_directory,noremove):
         random_int = str(random.randint(0,1000000))
         #get extension of image
         image_ext = image.split(".")[-1]
-        dest_image = random_int + image_ext
-        dest_txt = random_int + ".txt"
+        dest_image = random_int + "." + image_ext
+        dest_text = random_int + ".txt"
         
         shutil.copy(os.path.join(source_directory, image), os.path.join(image_dir, dest_image))
         shutil.copy(os.path.join(source_directory, text), os.path.join(label_dir, dest_text))
